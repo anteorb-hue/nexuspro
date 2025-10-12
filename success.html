@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hvala na kupnji NexusPro pretplate">
+    <title>Uspješna kupnja - NexusPro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: linear-gradient(135deg, #0e7c8a 0%, #0a5f6b 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #17a2b8;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+        }
+
+        /* Success Section */
+        .success-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 0;
+        }
+
+        .success-card {
+            background: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: scaleIn 0.6s ease-out 0.3s backwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+
+        .success-card h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .success-card p {
+            font-size: 18px;
+            color: #718096;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .info-box {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #1a202c;
+            font-weight: 600;
+        }
+
+        .next-steps {
+            background: #e6fffa;
+            border: 2px solid #81e6d9;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .next-steps h3 {
+            color: #234e52;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+
+        .next-steps ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .next-steps li {
+            padding: 8px 0;
+            color: #234e52;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .next-steps li::before {
+            content: "✓";
+            color: #38a169;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            margin-right: 12px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #138496 0%, #0e6b7a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(23, 162, 184, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #17a2b8;
+            border: 2px solid #17a2b8;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .support-note {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .support-note a {
+            color: #17a2b8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .support-note a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .success-card {
+                padding: 40px 24px;
+            }
+
+            .success-card h1 {
+                font-size: 28px;
+            }
+
+            .success-card p {
+                font-size: 16px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                margin-right: 0 !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .success-card h1 {
+                font-size: 24px;
+            }
+
+            .info-box {
+                padding: 16px;
+            }
+
+            .next-steps {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">
+                <img src="https://i.ibb.co/xqG1PkyZ/Nexus-Pro-Favicon-Icon-4.png" alt="NexusPro">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Success Section -->
+    <section class="success-section">
+        <div class="container">
+            <div class="success-card">
+                <div class="success-icon">
+                    <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+
+                <h1>Uspješna kupnja! 🎉</h1>
+                <p>Hvala što ste odabrali NexusPro. Vaša pretplata je aktivirana i spremna za korištenje.</p>
+
+                <div class="info-box">
+                    <div class="info-item">
+                        <span class="info-label">Plan:</span>
+                        <span class="info-value" id="planName">Pro</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Način plaćanja:</span>
+                        <span class="info-value" id="billingCycle">Godišnje</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value" style="color: #38a169;">Aktivno</span>
+                    </div>
+                </div>
+
+                <div class="next-steps">
+                    <h3>Sljedeći koraci:</h3>
+                    <ul>
+                        <li>Potvrda kupnje poslana je na vašu email adresu</li>
+                        <li>Primit ćete pristupne podatke u roku od 24 sata</li>
+                        <li>Naš tim će vas kontaktirati za početni setup</li>
+                        <li>Preuzmite mobilnu aplikaciju za iOS ili Android</li>
+                    </ul>
+                </div>
+
+                <div class="button-group">
+                    <a href="https://apps.apple.com/hr/app/nexuspro/id6736984185" class="btn btn-primary" target="_blank" rel="noopener">
+                        Preuzmi iOS app
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=design.redcodeweb.nexuspro&hl=en" class="btn btn-primary" target="_blank" rel="noopener">
+                        Preuzmi Android app
+                    </a>
+                </div>
+
+                <div style="margin-top: 24px;">
+                    <a href="index.html" class="btn btn-secondary">Nazad na početnu</a>
+                </div>
+
+                <div class="support-note">
+                    Imate pitanja? Kontaktirajte nas na 
+                    <a href="mailto:info@phv-solutions.com">info@phv-solutions.com</a>
+                    <br>ili posjetite našu <a href="index.html#faq">FAQ stranicu</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Get session ID from URL (optional - for tracking)
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session_id');
+        
+        // You can send this to your backend for verification
+        if (sessionId) {
+            console.log('Stripe Session ID:', sessionId);
+            // Optional: Send to your backend for verification
+            // fetch('/api/verify-session', {
+            //     method: 'POST',
+            //     body: JSON.stringify({ sessionId }),
+            //     headers: { 'Content-Type': 'application/json' }
+            // });
+        }
+
+        // Try to get plan info from localStorage (if set during checkout)
+        const selectedPlan = localStorage.getItem('selectedPlan');
+        const billingCycle = localStorage.getItem('billingCycle');
+
+        if (selectedPlan) {
+            document.getElementById('planName').textContent = 
+                selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
+        }
+
+        if (billingCycle) {
+            document.getElementById('billingCycle').textContent = 
+                billingCycle === 'yearly' ? 'Godišnje' : 'Mjesečno';
+        }
+
+        // Clear localStorage
+        localStorage.removeItem('selectedPlan');
+        localStorage.removeItem('billingCycle');
+
+        // Confetti effect (optional - fun touch!)
+        function createConfetti() {
+            const colors = ['#17a2b8', '#48bb78', '#f6e05e', '#ed8936'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.cssText = `
+                        position: fixed;
+                        width: 10px;
+                        height: 10px;
+                        background: ${colors[Math.floor(Math.random() * colors.length)]};
+                        left: ${Math.random() * 100}vw;
+                        top: -10px;
+                        border-radius: 50%;
+                        pointer-events: none;
+                        animation: fall ${2 + Math.random() * 2}s linear forwards;
+                        z-index: 9999;
+                    `;
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
+            }
+        }
+
+        // Add fall animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Trigger confetti on load
+        window.addEventListener('load', createConfetti);
+    </script>
+</body>
+</html>

@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NexusPro - Kompletan sustav za online edukacije, praćenje napretka i angažman korisnika">
+    <title>NexusPro - Edukacijska platforma za autore i tvrtke</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(249, 250, 251, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #17a2b8;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+            filter: brightness(0) saturate(100%) invert(52%) sepia(68%) saturate(531%) hue-rotate(142deg) brightness(91%) contrast(87%);
+        }
+
+        .logo:hover img {
+            filter: brightness(0) saturate(100%) invert(40%) sepia(68%) saturate(531%) hue-rotate(142deg) brightness(91%) contrast(87%);
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #17a2b8;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #17a2b8;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #4a5568;
+        }
+
+        .mobile-menu-btn svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .mobile-nav.open {
+            display: block;
+        }
+
+        .mobile-nav-content {
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100%;
+            background: white;
+            transition: right 0.3s ease;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .mobile-nav.open .mobile-nav-content {
+            right: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .mobile-nav-header .logo {
+            font-size: 24px;
+        }
+
+        .mobile-nav-header .logo img {
+            filter: brightness(0) saturate(100%) invert(52%) sepia(68%) saturate(531%) hue-rotate(142deg) brightness(91%) contrast(87%);
+        }
+
+        .mobile-close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #4a5568;
+        }
+
+        .mobile-close-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            padding: 20px;
+        }
+
+        .mobile-nav-links li {
+            margin-bottom: 20px;
+        }
+
+        .mobile-nav-links a {
+            text-decoration: none;
+            color: #1a202c;
+            font-size: 18px;
+            font-weight: 500;
+            display: block;
+            padding: 12px 0;
+            border-bottom: 1px solid #f7fafc;
+            transition: color 0.3s;
+        }
+
+        .mobile-nav-links a:hover {
+            color: #17a2b8;
+        }
+
+        /* Hero Section */
+        section.hero {
+            background: linear-gradient(135deg, #0e7c8a 0%, #0a5f6b 100%) !important;
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+            color: white;
+            padding: 120px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        section.hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        section.hero p {
+            font-size: 22px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .cta-buttons {
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #17a2b8;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%) !important;
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+        }
+
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #138496 0%, #0e6b7a 100%) !important;
+            box-shadow: 0 8px 25px rgba(23, 162, 184, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* App Badges */
+        .app-badges {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.5s backwards;
+        }
+
+        .app-badge {
+            display: block;
+            height: 60px;
+            transition: transform 0.3s ease;
+        }
+
+        .app-badge img {
+            height: 60px !important;
+            width: auto !important;
+            display: block;
+        }
+
+        .app-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .hero-visual {
+            margin-top: 60px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 80px 40px;
+            color: rgba(255,255,255,0.7);
+            font-size: 20px;
+            text-align: center;
+            animation: fadeInUp 1s ease-out 0.6s backwards, float 6s ease-in-out 2s infinite;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 0;
+        }
+
+        section:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .section-header p {
+            font-size: 20px;
+            color: #718096;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+        }
+
+        .card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: #1a202c;
+        }
+
+        .card p {
+            color: #718096;
+            line-height: 1.7;
+        }
+
+        /* Steps */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step:hover .step-number {
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        .step h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .step p {
+            color: #718096;
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(23, 162, 184, 0.25);
+        }
+
+        .pricing-card.featured {
+            border-color: #17a2b8;
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(23, 162, 184, 0.2);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.08) translateY(-12px);
+        }
+
+        .badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: #17a2b8;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .pricing-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: 700;
+            color: #17a2b8;
+            margin: 20px 0;
+            word-break: break-word;
+        }
+
+        .price span {
+            font-size: 20px;
+            color: #718096;
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 24px 0;
+            flex-grow: 1;
+        }
+
+        .pricing-features li {
+            padding: 12px 0;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pricing-features li::before {
+            content: "✓";
+            color: #17a2b8;
+            font-weight: 700;
+        }
+
+        /* FAQ */
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .faq-question {
+            padding: 24px;
+            font-weight: 600;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: #f7fafc;
+        }
+
+        .faq-question span {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active span {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            color: #718096;
+            line-height: 1.7;
+        }
+
+        .faq-answer.open {
+            max-height: 500px;
+            padding: 0 24px 24px;
+        }
+
+        /* Contact */
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .form-success {
+            display: none;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-success.show {
+            display: block;
+        }
+
+        .form-error {
+            display: none;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #17a2b8;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a202c;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        .footer-section .logo img {
+            filter: brightness(0) saturate(100%) invert(100%);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #2d3748;
+            padding-top: 30px;
+            text-align: center;
+            color: #a0aec0;
+        }
+
+        .footer-bottom a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-bottom a:hover {
+            color: white;
+        }
+
+        /* Scroll reveal */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(23, 162, 184, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(23, 162, 184, 0.6);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Cookie Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+            z-index: 10000;
+            padding: 24px;
+            display: none;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .cookie-banner.show {
+            display: block;
+        }
+
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .cookie-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .cookie-text h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .cookie-text p {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .cookie-text a {
+            color: #17a2b8;
+            text-decoration: none;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .cookie-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .cookie-btn-accept {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .cookie-btn-accept:hover {
+            background: #138496;
+        }
+
+        .cookie-btn-decline {
+            background: transparent;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .cookie-btn-settings {
+            background: transparent;
+            color: #17a2b8;
+            border: 2px solid #17a2b8;
+        }
+
+        .cookie-btn-settings:hover {
+            background: #f7fafc;
+        }
+
+        /* Cookie Settings Modal */
+        .cookie-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .cookie-modal.show {
+            display: flex;
+        }
+
+        .cookie-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .cookie-modal-header {
+            margin-bottom: 24px;
+        }
+
+        .cookie-modal-header h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .cookie-category {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .cookie-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .cookie-category h3 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .cookie-toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .cookie-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .cookie-toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e0;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+
+        .cookie-toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .cookie-toggle input:checked + .cookie-toggle-slider {
+            background-color: #17a2b8;
+        }
+
+        .cookie-toggle input:checked + .cookie-toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .cookie-toggle input:disabled + .cookie-toggle-slider {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .cookie-category p {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .cookie-modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: #f7fafc;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 8px 0;
+        }
+
+        .top-bar .container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .top-bar a {
+            color: #4a5568;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .top-bar a:hover {
+            color: #17a2b8;
+        }
+
+        .social-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            nav {
+                padding: 12px 0;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .top-bar {
+                font-size: 12px;
+            }
+
+            .top-bar .container {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+
+            .top-bar a {
+                font-size: 12px;
+            }
+
+            section.hero {
+                padding: 80px 0 60px;
+            }
+
+            section.hero h1 {
+                font-size: 32px;
+                line-height: 1.3;
+            }
+            
+            section.hero p {
+                font-size: 18px;
+                margin-bottom: 32px;
+            }
+
+            .hero-visual {
+                padding: 60px 20px;
+                font-size: 16px;
+                margin-top: 40px;
+            }
+
+            .cta-buttons {
+                margin-bottom: 24px;
+            }
+
+            .btn {
+                padding: 14px 32px;
+                font-size: 15px;
+            }
+
+            .app-badges {
+                gap: 12px;
+                margin: 32px 0;
+            }
+
+            .app-badge {
+                height: 50px;
+            }
+
+            .app-badge img {
+                height: 50px !important;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+            
+            .section-header {
+                margin-bottom: 40px;
+            }
+
+            .section-header h2 {
+                font-size: 28px;
+                line-height: 1.3;
+            }
+
+            .section-header p {
+                font-size: 16px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .card {
+                padding: 24px;
+            }
+
+            .card h3 {
+                font-size: 20px;
+            }
+
+            .card p {
+                font-size: 15px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .step-number {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+
+            .step h3 {
+                font-size: 20px;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .pricing-card {
+                padding: 32px 24px;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .pricing-card.featured:hover {
+                transform: translateY(-8px);
+            }
+
+            .price {
+                font-size: 40px;
+            }
+
+            .pricing-features {
+                margin: 20px 0;
+            }
+
+            .pricing-features li {
+                padding: 10px 0;
+                font-size: 14px;
+            }
+
+            .faq-question {
+                padding: 20px;
+                font-size: 16px;
+            }
+
+            .faq-answer {
+                font-size: 14px;
+            }
+
+            .contact-form {
+                padding: 24px;
+            }
+
+            .form-group label {
+                font-size: 15px;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                font-size: 15px;
+                padding: 12px;
+            }
+
+            footer {
+                padding: 40px 0 20px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                text-align: center;
+            }
+
+            .footer-section h4 {
+                font-size: 16px;
+            }
+
+            .footer-links li {
+                margin-bottom: 10px;
+            }
+
+            .footer-bottom {
+                padding-top: 20px;
+                font-size: 13px;
+            }
+
+            .footer-bottom p {
+                margin-bottom: 8px;
+            }
+
+            .cookie-banner {
+                padding: 16px;
+            }
+
+            .cookie-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 16px;
+            }
+
+            .cookie-text {
+                min-width: auto;
+            }
+
+            .cookie-text h3 {
+                font-size: 16px;
+            }
+
+            .cookie-text p {
+                font-size: 13px;
+            }
+
+            .cookie-buttons {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .cookie-btn {
+                padding: 10px 20px;
+                font-size: 13px;
+                flex: 1;
+                min-width: 100px;
+            }
+
+            .cookie-modal-content {
+                padding: 24px;
+                width: 95%;
+                max-height: 90vh;
+            }
+
+            .cookie-modal-header h2 {
+                font-size: 24px;
+            }
+
+            .cookie-modal-header p {
+                font-size: 13px;
+            }
+
+            .cookie-category {
+                padding: 16px;
+            }
+
+            .cookie-category h3 {
+                font-size: 16px;
+            }
+
+            .cookie-category p {
+                font-size: 13px;
+            }
+
+            .cookie-modal-actions {
+                flex-direction: column;
+            }
+
+            .cookie-modal-actions .cookie-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            section.hero h1 {
+                font-size: 28px;
+            }
+
+            section.hero p {
+                font-size: 16px;
+            }
+
+            .section-header h2 {
+                font-size: 24px;
+            }
+
+            .price {
+                font-size: 36px;
+            }
+
+            .btn {
+                padding: 12px 24px;
+                font-size: 14px;
+            }
+
+            .app-badge {
+                height: 45px;
+            }
+
+            .app-badge img {
+                height: 45px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <a href="mailto:info@phv-solutions.com">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                </svg>
+                info@phv-solutions.com
+            </a>
+            <a href="https://www.linkedin.com/company/nexuspro-phvsolutions/" target="_blank" rel="noopener">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clip-rule="evenodd"/>
+                </svg>
+            </a>
+            <a href="https://www.facebook.com/pharmavision.solutions/" target="_blank" rel="noopener">
+                <svg class="social-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z" clip-rule="evenodd"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo" onclick="scrollToTop()">
+                <img src="https://i.ibb.co/xqG1PkyZ/Nexus-Pro-Favicon-Icon-4.png" alt="NexusPro">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#namijenjeno">Korisnici</a></li>
+                <li><a href="#mogucnosti">Mogućnosti</a></li>
+                <li><a href="#cijene">Cijene</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="https://nexuspro.biz/o-nama/">O nama</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="openMobileMenu()" aria-label="Open menu">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav" onclick="closeMobileMenuOutside(event)">
+        <div class="mobile-nav-content">
+            <div class="mobile-nav-header">
+                <div class="logo">
+                    <img src="https://i.ibb.co/xqG1PkyZ/Nexus-Pro-Favicon-Icon-4.png" alt="NexusPro" style="height: 35px;">
+                </div>
+                <button class="mobile-close-btn" onclick="closeMobileMenu()" aria-label="Close menu">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </button>
+            </div>
+            <ul class="mobile-nav-links">
+                <li><a href="#namijenjeno" onclick="closeMobileMenu()">Korisnici</a></li>
+                <li><a href="#mogucnosti" onclick="closeMobileMenu()">Mogućnosti</a></li>
+                <li><a href="#cijene" onclick="closeMobileMenu()">Cijene</a></li>
+                <li><a href="#faq" onclick="closeMobileMenu()">FAQ</a></li>
+                <li><a href="https://nexuspro.biz/o-nama/">O nama</a></li>
+                <li><a href="#kontakt" onclick="closeMobileMenu()">Kontakt</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Tvoja edukacijska platforma.<br>Sve na jednom mjestu.</h1>
+            <p>Prodaj znanje, angažiraj publiku i rasti bez 10 različitih alata. Kompletan sustav za isporuku edukacija, praćenje napretka i nagrađivanje.</p>
+            <div class="cta-buttons">
+                <a href="mailto:info@phv-solutions.com" class="btn btn-primary">Kontaktiraj nas</a>
+            </div>
+            
+            <!-- App Store Badges -->
+            <div class="app-badges">
+                <a href="https://apps.apple.com/hr/app/nexuspro/id6736984185" target="_blank" rel="noopener" class="app-badge">
+                    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=design.redcodeweb.nexuspro&hl=en" target="_blank" rel="noopener" class="app-badge">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play">
+                </a>
+            </div>
+
+            <div class="hero-visual">
+                📱 Vaša edukacijska platforma u džepu
+            </div>
+        </div>
+    </section>
+
+    <!-- Kome je namijenjeno -->
+    <section id="namijenjeno">
+        <div class="container">
+            <div class="section-header">
+                <h2>Kome je namijenjeno?</h2>
+                <p>Za sve koji žele jednostavno i profesionalno isporučiti edukacijski sadržaj</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3>Autori i edukatori</h3>
+                    <p>Ako prodaješ edukacije ili dijeliš besplatan sadržaj, NexusPro ti daje alate za isporuku, angažman i nagrađivanje – bez dodatnih servisa.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🏢</div>
+                    <h3>Tvrtke i HR odjeli</h3>
+                    <p>Educiraj zaposlenike, prati njihov napredak i motiviraj ih kroz sustav bodova i nagrada. Sve centralizirano na jednom mjestu.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎓</div>
+                    <h3>Online škole</h3>
+                    <p>Kompletna platforma za pokretanje online škole s kvizovima, live predavanjima, zadacima i praćenjem napretka.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Što dobiješ -->
+    <section id="mogucnosti">
+        <div class="container">
+            <div class="section-header">
+                <h2>Što dobiješ s NexusPro?</h2>
+                <p>Sve funkcionalnosti za uspješnu online edukaciju</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📦</div>
+                    <h3>Sve na jednom mjestu</h3>
+                    <p>Članci, videi, live pozivi, kvizovi, ankete i zadaci. Jednostavan upload svih formata: PDF, DOCX, audio, slike, ZIP...</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📹</div>
+                    <h3>Live predavanja</h3>
+                    <p>Zoom/Teams link s automatskim e-mail podsjetnicima. Organiziraj webinare i prati tko je prisustvovao.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✅</div>
+                    <h3>Kvizovi & testovi</h3>
+                    <p>U realnom vremenu, s bodovima i rang-listom. Prati znanje i motiviraj kroz natjecanje.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📋</div>
+                    <h3>To-do zadaci</h3>
+                    <p>Zadaj, prati izvršenje i primi predane datoteke. Korisnici upload-aju rješenja u bilo kojem formatu.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎮</div>
+                    <h3>Bodovi i nagrade</h3>
+                    <p>Gamifikacija koja djeluje. Postavi pravila za bodove i otključavanje nagrada, bedževa i ekskluzivnog sadržaja.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3>Analitika i izvještaji</h3>
+                    <p>Prati angažman, napredak, najbolje korisnike i ROI. Donosi odluke temeljene na podacima.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kako radi -->
+    <section id="kako-radi">
+        <div class="container">
+            <div class="section-header">
+                <h2>Kako NexusPro radi?</h2>
+                <p>Od postavljanja do mjerenja rezultata u 4 koraka</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Postavi sadržaj</h3>
+                    <p>Uvezi materijale i odaberi pristup. Podržani svi formati i fleksibilne postavke privatnosti.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Pozovi publiku</h3>
+                    <p>Podijeli kod. Jednostavna registracija za tvoje korisnike.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Uključi igru</h3>
+                    <p>Kvizovi, zadaci, bodovi, nagrade. Motiviraj kroz natjecateljski duh i postignuća.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Mjeri i skaliraj</h3>
+                    <p>Analitika i povratne informacije. Optimiziraj sadržaj i rasti na temelju podataka.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cijene -->
+    <section id="cijene">
+        <div class="container">
+            <div class="section-header">
+                <h2>Odaberi plan koji ti odgovara</h2>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Basic</h3>
+                    <div class="price">€49<span>/mjesec</span></div>
+                    <ul class="pricing-features">
+                        <li>17% popusta na godišnju pretplatu</li>
+                        <li>Do 100 aktivnih korisnika</li>
+                        <li>Sve funkcionalnosti aplikacije bez mjesečne analitike</li>
+                        <li>Neograničen broj dijeljenog sadržaja</li>
+                        <li>Podrška putem e-maila radnim danom 8-16h</li>
+                        <li>1 administrator koji upravlja sadržajem</li>
+                    </ul>
+                    <a href="checkout.html?plan=basic" class="btn btn-primary btn-gradient" style="width: 100%; text-align: center;">Odaberi plan</a>
+                </div>
+                <div class="pricing-card featured">
+                    <span class="badge">Najpopularnije</span>
+                    <h3>Pro</h3>
+                    <div class="price">€99<span>/mjesec</span></div>
+                    <ul class="pricing-features">
+                        <li>Sve iz Basic +</li>
+                        <li>17% popusta na godišnju pretplatu</li>
+                        <li>Do 500 aktivnih korisnika</li>
+                        <li>Slanje analitike jednom mjesečno</li>
+                        <li>Prioritetna podrška putem e-maila</li>
+                        <li>1 administrator koji upravlja sadržajem</li>
+                    </ul>
+                    <a href="checkout.html?plan=pro" class="btn btn-primary btn-gradient" style="width: 100%; text-align: center;">Odaberi plan</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">Na upit</div>
+                    <ul class="pricing-features">
+                        <li>Neograničeni korisnici</li>
+                        <li>Sve iz Pro +</li>
+                        <li>Više administratora</li>
+                        <li>Više rezdvojenih grupa/odjela</li>
+                        <li>Edukacija članova tima</li>
+                        <li>Prioritetna podrška putem telefona i e-maila</li>
+                    </ul>
+                    <a href="#kontakt" class="btn btn-primary btn-gradient" style="width: 100%; text-align: center;">Kontaktiraj nas</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Često postavljana pitanja</h2>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Tko je vlasnik sadržaja?
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Ti – uvijek zadržavaš 100% vlasništva nad svojim sadržajem. NexusPro je samo alat za isporuku i upravljanje edukacijama.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Kako naplaćujem publici?
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Naplatu radiš preko svog checkouta (Stripe/PayPal/vaša platforma). NexusPro ne uzima postotak od tvojih prihoda.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Koliko admina pokriva cijena?
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Basic i Pro planovi uključuju 1 administratora. Team i Enterprise planovi omogućuju više administratora po prilagođenoj cijeni.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Mogu li kombinirati besplatan i plaćeni sadržaj?
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Da – možeš kreirati različite kolekcije s različitim razinama pristupa. Besplatan sadržaj za privlačenje publike, premium za plaćene članove.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Jesu li moguća live predavanja?
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Da – integrirani smo sa Zoom i Microsoft Teams. Postavi live poziv s automatskim e-mail podsjetnicima i praćenjem prisustva.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Imate kvizove i sustav nagrađivanja?
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Da – kvizovi uživo s rang-listama, bodovni sustav, bedževi i otključavanje nagrada. Potpuna gamifikacija za maksimalni angažman.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Na kojim platformama radi NexusPro?
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Dostupno na iOS (App Store) i Android (Google Play). Sve funkcionalnosti dostupne su na svim platformama.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section id="kontakt">
+        <div class="container">
+            <div class="contact-content">
+                <div class="section-header">
+                    <h2>Zainteresiran?</h2>
+                    <p>Pošalji nam upit i odgovorit ćemo u najkraćem roku</p>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="contact-form">
+                    <div class="form-success" id="formSuccess">
+                        ✓ Hvala! Vaša poruka je uspješno poslana. Odgovorit ćemo vam u najkraćem roku.
+                    </div>
+                    <div class="form-error" id="formError">
+                        ✗ Došlo je do greške pri slanju poruke. Molimo pokušajte ponovno ili nas kontaktirajte direktno na info@phv-solutions.com
+                    </div>
+                    <form action="https://formspree.io/f/xjkaaavv" method="POST" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Ime i prezime *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Tvrtka (opcionalno)</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Poruka *</label>
+                            <textarea id="message" name="message" required placeholder="Opiši ukratko svoje potrebe ili postavi pitanje..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-gradient" style="width: 100%; cursor: pointer;" id="submitBtn">Pošalji upit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo" style="margin-bottom: 16px;">
+                        <img src="https://i.ibb.co/xqG1PkyZ/Nexus-Pro-Favicon-Icon-4.png" alt="NexusPro">
+                    </div>
+                    <p style="color: #a0aec0;">Kompletan sustav za online edukacije, praćenje napretka i angažman korisnika.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Proizvod</h4>
+                    <ul class="footer-links">
+                        <li><a href="#mogucnosti">Mogućnosti</a></li>
+                        <li><a href="#cijene">Cijene</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resursi</h4>
+                    <ul class="footer-links">
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#kontakt">Podrška</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Tvrtka</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://nexuspro.biz/o-nama/">O nama</a></li>
+                        <li><a href="#kontakt">Kontakt</a></li>
+                        <li><a href="https://nexuspro.biz/politika-privatnosti">Politika privatnosti</a></li>
+                        <li><a href="https://nexuspro.biz/zahtjev-za-ostvarivanje-prava">Zahtjev za ostvarivanje prava</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024. Sva prava zadržana | <a href="https://nexuspro.biz/politika-privatnosti">Politika privatnosti</a> | <a href="https://nexuspro.biz/zahtjev-za-ostvarivanje-prava">Zahtjev za ostvarivanje prava</a></p>
+                <p style="margin-top: 12px;">Stranicu izradio: <a href="https://phv-solutions.com/" target="_blank" rel="noopener">PharmaVision Solutions</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner show" id="cookieBanner">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <h3>Obavijest o kolačićima</h3>
+                <p>
+                    Koristimo kolačiće kako bismo poboljšali vaše iskustvo. 
+                    <a href="https://nexuspro.biz/politika-privatnosti">Pročitajte više</a>
+                </p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Prihvaćam sve</button>
+                <button class="cookie-btn cookie-btn-decline" onclick="declineCookies()">Odbijam sve</button>
+                <button class="cookie-btn cookie-btn-settings" onclick="openCookieSettings()">Postavke kolačića</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Settings Modal -->
+    <div class="cookie-modal" id="cookieModal">
+        <div class="cookie-modal-content">
+            <div class="cookie-modal-header">
+                <h2>Postavke kolačića</h2>
+                <p style="color: #718096;">Što su kolačići i za što se koriste? Kolačići („cookies") su male tekstualne datoteke s podacima o Vašem pregledavanju koje mrežna stranica pohranjuje na Vaše računalo, tablet ili pametni telefon. U nekim slučajevima je upotreba kolačića povezana s obradom osobnih podataka.</p>
+            </div>
+
+            <div class="cookie-category">
+                <div class="cookie-category-header">
+                    <h3>Tehnički (nužni) kolačići</h3>
+                    <label class="cookie-toggle">
+                        <input type="checkbox" checked disabled id="technicalCookies">
+                        <span class="cookie-toggle-slider"></span>
+                    </label>
+                </div>
+                <p>Ova kategorija omogućava korisniku pregledavanje mrežne stranice i upotrebu različitih opcija. Ova kategorija je nužna za funkcioniranje mrežne stranice i ne može se isključiti. Za korištenje ove vrste kolačića nije potrebna Vaša privola.</p>
+                <small style="color: #17a2b8; font-weight: 600; margin-top: 8px; display: block;">Always active</small>
+            </div>
+
+            <div class="cookie-category">
+                <div class="cookie-category-header">
+                    <h3>Analitički kolačići</h3>
+                    <label class="cookie-toggle">
+                        <input type="checkbox" id="analyticsCookies">
+                        <span class="cookie-toggle-slider"></span>
+                    </label>
+                </div>
+                <p>Ovi kolačići omogućuju analizu korištenja stranice kako bismo mogli mjeriti i poboljšati njenu izvedbu. Pomažu nam da saznamo koje su stranice najpopularnije i najmanje popularne te da vidimo kako se posjetitelji kreću po stranici.</p>
+            </div>
+
+            <div class="cookie-category">
+                <div class="cookie-category-header">
+                    <h3>Marketing kolačići</h3>
+                    <label class="cookie-toggle">
+                        <input type="checkbox" id="marketingCookies">
+                        <span class="cookie-toggle-slider"></span>
+                    </label>
+                </div>
+                <p>Marketing kolačići koriste se za praćenje posjetitelja kroz različite web stranice. Cilj im je prikazivanje oglasa koji su relevantni i zanimljivi za pojedinog korisnika, a time i vrjedniji za izdavače i treće oglašivače.</p>
+            </div>
+
+            <div class="cookie-modal-actions">
+                <button class="cookie-btn cookie-btn-decline" onclick="closeCookieSettings()">Odustani</button>
+                <button class="cookie-btn cookie-btn-accept" onclick="saveCookieSettings()">Spremi postavke</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cookie Banner Functions
+        function acceptCookies() {
+            const consent = {
+                technical: true,
+                analytics: true,
+                marketing: true,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('cookieConsent', JSON.stringify(consent));
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+
+        function declineCookies() {
+            const consent = {
+                technical: true,
+                analytics: false,
+                marketing: false,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('cookieConsent', JSON.stringify(consent));
+            document.getElementById('cookieBanner').classList.remove('show');
+        }
+
+        function openCookieSettings() {
+            document.getElementById('cookieModal').classList.add('show');
+            
+            // Load saved preferences
+            const saved = localStorage.getItem('cookieConsent');
+            if (saved) {
+                const consent = JSON.parse(saved);
+                document.getElementById('analyticsCookies').checked = consent.analytics || false;
+                document.getElementById('marketingCookies').checked = consent.marketing || false;
+            }
+        }
+
+        function closeCookieSettings() {
+            document.getElementById('cookieModal').classList.remove('show');
+        }
+
+        function saveCookieSettings() {
+            const consent = {
+                technical: true,
+                analytics: document.getElementById('analyticsCookies').checked,
+                marketing: document.getElementById('marketingCookies').checked,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('cookieConsent', JSON.stringify(consent));
+            document.getElementById('cookieBanner').classList.remove('show');
+            document.getElementById('cookieModal').classList.remove('show');
+        }
+
+        // Check if user already made a choice
+        window.addEventListener('DOMContentLoaded', () => {
+            const consent = localStorage.getItem('cookieConsent');
+            if (consent) {
+                document.getElementById('cookieBanner').classList.remove('show');
+            }
+        });
+
+        // Scroll to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Mobile Menu Functions
+        function openMobileMenu() {
+            document.getElementById('mobileNav').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileNav').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function closeMobileMenuOutside(event) {
+            if (event.target.id === 'mobileNav') {
+                closeMobileMenu();
+            }
+        }
+
+        // Contact Form Submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contactForm');
+            const successMsg = document.getElementById('formSuccess');
+            const errorMsg = document.getElementById('formError');
+            const submitBtn = document.getElementById('submitBtn');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Šaljem...';
+                
+                // Hide previous messages
+                successMsg.classList.remove('show');
+                errorMsg.classList.remove('show');
+
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        // Show success message
+                        successMsg.classList.add('show');
+                        form.reset();
+                        
+                        // Scroll to success message
+                        successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        throw new Error('Form submission failed');
+                    }
+                } catch (error) {
+                    // Show error message
+                    errorMsg.classList.add('show');
+                    errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } finally {
+                    // Re-enable button
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Pošalji upit';
+                }
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('revealed');
+                    }, index * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards, steps, and pricing cards
+        window.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.card, .step, .pricing-card, .faq-item');
+            elements.forEach(el => {
+                el.classList.add('scroll-reveal');
+                observer.observe(el);
+            });
+        });
+
+        // Enhanced FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const isOpen = answer.classList.contains('open');
+                
+                // Close all
+                document.querySelectorAll('.faq-answer').forEach(a => {
+                    a.classList.remove('open');
+                });
+                document.querySelectorAll('.faq-question').forEach(q => {
+                    q.classList.remove('active');
+                });
+                
+                // Toggle current
+                if (!isOpen) {
+                    answer.classList.add('open');
+                    this.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NexusPro - Odaberi svoju pretplatu">
+    <title>Checkout - NexusPro</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: #f7fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(249, 250, 251, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #17a2b8;
+            cursor: pointer;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        /* Checkout Section */
+        .checkout-section {
+            padding: 60px 0 100px;
+            min-height: calc(100vh - 200px);
+        }
+
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .checkout-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .checkout-header p {
+            font-size: 18px;
+            color: #718096;
+        }
+
+        .checkout-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        /* Plan Card */
+        .plan-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .plan-card.selected {
+            border-color: #17a2b8;
+            box-shadow: 0 20px 40px rgba(23, 162, 184, 0.2);
+        }
+
+        .plan-card .badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: #17a2b8;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .plan-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .plan-original-price {
+            font-size: 18px;
+            color: #718096;
+            text-decoration: line-through;
+            margin-bottom: 8px;
+        }
+
+        .plan-price {
+            font-size: 48px;
+            font-weight: 700;
+            color: #17a2b8;
+            margin-bottom: 8px;
+        }
+
+        .plan-price span {
+            font-size: 20px;
+            color: #718096;
+            font-weight: 400;
+        }
+
+        .plan-savings {
+            font-size: 16px;
+            color: #48bb78;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .plan-description {
+            color: #718096;
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin: 24px 0;
+        }
+
+        .plan-features li {
+            padding: 10px 0;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+        }
+
+        .plan-features li::before {
+            content: "✓";
+            color: #17a2b8;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .select-icon {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .plan-card.selected .select-icon {
+            border-color: #17a2b8;
+            background: #17a2b8;
+        }
+
+        .select-icon::after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .plan-card.selected .select-icon::after {
+            opacity: 1;
+        }
+
+        /* Summary Section */
+        .checkout-summary {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .summary-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .summary-header h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .summary-plan-name {
+            font-size: 18px;
+            color: #17a2b8;
+            font-weight: 600;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            color: #4a5568;
+        }
+
+        .summary-item.total {
+            border-top: 2px solid #e2e8f0;
+            margin-top: 16px;
+            padding-top: 24px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a202c;
+        }
+
+        .summary-total-price {
+            color: #17a2b8;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 24px;
+        }
+
+        .checkout-btn:hover {
+            background: linear-gradient(135deg, #138496 0%, #0e6b7a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(23, 162, 184, 0.3);
+        }
+
+        .checkout-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .security-note {
+            text-align: center;
+            color: #718096;
+            font-size: 14px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .security-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a202c;
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            text-align: center;
+            color: #a0aec0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .checkout-content {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-summary {
+                position: static;
+                max-height: none;
+            }
+
+            .checkout-header h1 {
+                font-size: 32px;
+            }
+
+            .plan-card {
+                padding: 32px 24px;
+            }
+
+            .plan-price {
+                font-size: 40px;
+            }
+
+            .checkout-summary {
+                padding: 32px 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .checkout-header h1 {
+                font-size: 28px;
+            }
+
+            .plan-price {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <img src="https://i.ibb.co/xqG1PkyZ/Nexus-Pro-Favicon-Icon-4.png" alt="NexusPro">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section">
+        <div class="container">
+            <div class="checkout-header">
+                <h1>Odaberi način plaćanja</h1>
+                <p>Uštedi 17% s godišnjom pretplatom</p>
+            </div>
+
+            <div class="checkout-content">
+                <!-- Monthly Plan -->
+                <div class="plan-card" id="monthlyPlan" onclick="selectPlan('monthly')">
+                    <h3>Mjesečna pretplata</h3>
+                    <div class="plan-price" id="monthlyPrice">€49<span>/mjesec</span></div>
+                    <div class="plan-description">
+                        Naplata svakog mjeseca. Otkažite bilo kada.
+                    </div>
+                    <ul class="plan-features">
+                        <li>Automatsko obnavljanje</li>
+                        <li>Otkaz u bilo kojem trenutku</li>
+                        <li>Neograničena podrška</li>
+                    </ul>
+                    <div class="select-icon"></div>
+                </div>
+
+                <!-- Yearly Plan -->
+                <div class="plan-card selected" id="yearlyPlan" onclick="selectPlan('yearly')">
+                    <span class="badge">Uštedi 17%</span>
+                    <h3>Godišnja pretplata</h3>
+                    <div class="plan-original-price" id="yearlyOriginal">€588 / godinu</div>
+                    <div class="plan-price" id="yearlyPrice">€488<span>/godinu</span></div>
+                    <div class="plan-savings">Ušteda od €100 godišnje</div>
+                    <div class="plan-description">
+                        Jedna naplata godišnje. Najbolja vrijednost.
+                    </div>
+                    <ul class="plan-features">
+                        <li>17% popusta</li>
+                        <li>Automatsko obnavljanje</li>
+                        <li>Otkaz u bilo kojem trenutku</li>
+                        <li>Prioritetna podrška</li>
+                    </ul>
+                    <div class="select-icon"></div>
+                </div>
+            </div>
+
+            <!-- Checkout Summary -->
+            <div style="max-width: 500px; margin: 60px auto 0;">
+                <div class="checkout-summary">
+                    <div class="summary-header">
+                        <h2>Sažetak narudžbe</h2>
+                        <div class="summary-plan-name" id="selectedPlanName">Pro Plan - Godišnje</div>
+                    </div>
+
+                    <div class="summary-item">
+                        <span>Plan:</span>
+                        <span id="summaryPlan">Pro</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Način plaćanja:</span>
+                        <span id="summaryBilling">Godišnje</span>
+                    </div>
+                    <div class="summary-item" id="savingsRow" style="color: #48bb78;">
+                        <span>Ušteda:</span>
+                        <span id="summarySavings">€100</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Ukupno:</span>
+                        <span class="summary-total-price" id="summaryTotal">€488</span>
+                    </div>
+
+                    <button class="checkout-btn" id="checkoutBtn" onclick="proceedToCheckout()">
+                        Nastavi na plaćanje
+                    </button>
+
+                    <div class="security-note">
+                        <svg class="security-icon" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Sigurno plaćanje putem Stripe-a
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 NexusPro. Sva prava zadržana.</p>
+                <div class="footer-links">
+                    <a href="index.html">Početna</a>
+                    <a href="https://nexuspro.biz/o-nama/">O nama</a>
+                    <a href="https://nexuspro.biz/politika-privatnosti">Politika privatnosti</a>
+                    <a href="index.html#kontakt">Kontakt</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Get plan from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedPlan = urlParams.get('plan') || 'pro';
+        let billingCycle = 'yearly';
+
+        // Stripe Price IDs
+        const stripePriceIds = {
+            basic: {
+                monthly: 'price_1SHOgqJhSMNpkbl827ZxBuAk',
+                yearly: 'price_1SHOoIJhSMNpkbl8REo4khlM'
+            },
+            pro: {
+                monthly: 'price_1SHOoxJhSMNpkbl8EBUQSLnu',
+                yearly: 'price_1SHOpXJhSMNpkbl8KifY3fLv'
+            }
+        };
+
+        // Initialize Stripe
+        const stripe = Stripe('pk_live_51SFsghJhSMNpkbl8uNUSXKpqTTc0nRftIIyfvnVroyUtOU4Ws7flVhsrOWafhSWN17uyCcuETSSqjHDdrwBt0N6k00O6CRAAPk');
+
+        // Pricing data
+        const pricing = {
+            basic: {
+                monthly: 49,
+                yearly: 488,
+                yearlyOriginal: 588,
+                savings: 100
+            },
+            pro: {
+                monthly: 99,
+                yearly: 988,
+                yearlyOriginal: 1188,
+                savings: 200
+            }
+        };
+
+        // Initialize page
+        function initPage() {
+            updatePrices();
+            updateSummary();
+        }
+
+        // Update prices based on selected plan
+        function updatePrices() {
+            const plan = pricing[selectedPlan];
+            document.getElementById('monthlyPrice').innerHTML = `€${plan.monthly}<span>/mjesec</span>`;
+            document.getElementById('yearlyPrice').innerHTML = `€${plan.yearly}<span>/godinu</span>`;
+            document.getElementById('yearlyOriginal').textContent = `€${plan.yearlyOriginal} / godinu`;
+            
+            // Update savings text
+            const savingsText = document.querySelector('.plan-savings');
+            savingsText.textContent = `Ušteda od €${plan.savings} godišnje`;
+        }
+
+        // Select plan
+        function selectPlan(cycle) {
+            billingCycle = cycle;
+            
+            // Update UI
+            document.getElementById('monthlyPlan').classList.toggle('selected', cycle === 'monthly');
+            document.getElementById('yearlyPlan').classList.toggle('selected', cycle === 'yearly');
+            
+            updateSummary();
+        }
+
+        // Update summary
+        function updateSummary() {
+            const plan = pricing[selectedPlan];
+            const isYearly = billingCycle === 'yearly';
+            const price = isYearly ? plan.yearly : plan.monthly;
+            const planName = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1);
+            const billingText = isYearly ? 'Godišnje' : 'Mjesečno';
+            
+            document.getElementById('selectedPlanName').textContent = `${planName} Plan - ${billingText}`;
+            document.getElementById('summaryPlan').textContent = planName;
+            document.getElementById('summaryBilling').textContent = billingText;
+            document.getElementById('summaryTotal').textContent = `€${price}`;
+            
+            // Show/hide savings row
+            const savingsRow = document.getElementById('savingsRow');
+            if (isYearly) {
+                savingsRow.style.display = 'flex';
+                document.getElementById('summarySavings').textContent = `€${plan.savings}`;
+            } else {
+                savingsRow.style.display = 'none';
+            }
+        }
+
+        // Proceed to Stripe Checkout
+        async function proceedToCheckout() {
+            const btn = document.getElementById('checkoutBtn');
+            btn.disabled = true;
+            btn.textContent = 'Preusmjeravanje...';
+
+            try {
+                // Save plan info for success page
+                localStorage.setItem('selectedPlan', selectedPlan);
+                localStorage.setItem('billingCycle', billingCycle);
+                
+                // Get the Stripe Price ID
+                const priceId = stripePriceIds[selectedPlan][billingCycle];
+                
+                // Redirect to Stripe Checkout
+                const { error } = await stripe.redirectToCheckout({
+                    lineItems: [{
+                        price: priceId,
+                        quantity: 1
+                    }],
+                    mode: 'subscription',
+                    successUrl: window.location.origin + '/success.html?session_id={CHECKOUT_SESSION_ID}',
+                    cancelUrl: window.location.origin + '/checkout.html?plan=' + selectedPlan,
+                    customerEmail: '', // Opcionalno: možeš dodati email ako ga imaš
+                });
+
+                if (error) {
+                    console.error('Stripe error:', error);
+                    alert('Došlo je do greške. Molimo pokušajte ponovno.');
+                    btn.disabled = false;
+                    btn.textContent = 'Nastavi na plaćanje';
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Došlo je do greške. Molimo pokušajte ponovno.');
+                btn.disabled = false;
+                btn.textContent = 'Nastavi na plaćanje';
+            }
+        }
+
+        // Initialize on page load
+        initPage();
+    </script>
+</body>
+</html>
