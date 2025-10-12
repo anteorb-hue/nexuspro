@@ -591,15 +591,27 @@
                 // Get the Stripe Price ID
                 const priceId = stripePriceIds[selectedPlan][billingCycle];
                 
+                // Call your backend to create Checkout Session
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        priceId: priceId,
+                        plan: selectedPlan
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
                 // Redirect to Stripe Checkout
                 const { error } = await stripe.redirectToCheckout({
-                    lineItems: [{
-                        price: priceId,
-                        quantity: 1
-                    }],
-                    mode: 'subscription',
-                    successUrl: 'https://nexuspro.biz/success?session_id={CHECKOUT_SESSION_ID}',
-                    cancelUrl: 'https://nexuspro.biz/checkout?plan=' + selectedPlan,
+                    sessionId: data.sessionId,
                 });
 
                 if (error) {
@@ -610,7 +622,7 @@
                 }
             } catch (error) {
                 console.error('Checkout error:', error);
-                alert('Došlo je do greške. Molimo pokušajte ponovno.');
+                alert('Došlo je do greške: ' + error.message);
                 btn.disabled = false;
                 btn.textContent = 'Nastavi na plaćanje';
             }
