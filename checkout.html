@@ -598,9 +598,8 @@
                         quantity: 1
                     }],
                     mode: 'subscription',
-                    successUrl: window.location.origin + '/success.html?session_id={CHECKOUT_SESSION_ID}',
-                    cancelUrl: window.location.origin + '/checkout.html?plan=' + selectedPlan,
-                    customerEmail: '', // Opcionalno: možeš dodati email ako ga imaš
+                    successUrl: 'https://nexuspro.biz/success?session_id={CHECKOUT_SESSION_ID}',
+                    cancelUrl: 'https://nexuspro.biz/checkout?plan=' + selectedPlan,
                 });
 
                 if (error) {
