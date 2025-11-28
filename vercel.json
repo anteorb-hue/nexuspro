@@ -1,4 +1,5 @@
 {
+  "trailingSlash": false,
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
     { "source": "/o-nama", "destination": "/o-nama.html" },
@@ -7,5 +8,13 @@
     { "source": "/uvjeti-koristenja", "destination": "/uvjeti-koristenja.html" },
     { "source": "/politika-privatnosti", "destination": "/politika-privatnosti.html" },
     { "source": "/zahtjev-za-ostvarivanje-prava", "destination": "/zahtjev-za-ostvarivanje-prava.html" }
+  ],
+  "redirects": [
+    { "source": "/o-nama/", "destination": "/o-nama", "permanent": true },
+    { "source": "/checkout/", "destination": "/checkout", "permanent": true },
+    { "source": "/success/", "destination": "/success", "permanent": true },
+    { "source": "/uvjeti-koristenja/", "destination": "/uvjeti-koristenja", "permanent": true },
+    { "source": "/politika-privatnosti/", "destination": "/politika-privatnosti", "permanent": true },
+    { "source": "/zahtjev-za-ostvarivanje-prava/", "destination": "/zahtjev-za-ostvarivanje-prava", "permanent": true }
   ]
 }
