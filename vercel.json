@@ -3,6 +3,9 @@
     { "source": "/", "destination": "/index.html" },
     { "source": "/o-nama", "destination": "/o-nama.html" },
     { "source": "/checkout", "destination": "/checkout.html" },
-    { "source": "/success", "destination": "/success.html" }
+    { "source": "/success", "destination": "/success.html" },
+    { "source": "/uvjeti-koristenja", "destination": "/uvjeti-koristenja.html" },
+    { "source": "/politika-privatnosti", "destination": "/politika-privatnosti.html" },
+    { "source": "/zahtjev-za-ostvarivanje-prava", "destination": "/zahtjev-za-ostvarivanje-prava.html" }
   ]
 }
